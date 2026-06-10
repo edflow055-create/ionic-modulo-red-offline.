@@ -1,0 +1,68 @@
+<!-- ============================================================
+     network-status.component.html
+     ============================================================
+     Template del indicador visual de estado de red.
+     Muestra:
+       1. Banner rojo persistente cuando está offline
+       2. Banner verde temporal al recuperar la conexión
+       3. Badge/ícono siempre visible en la cabecera
+     ============================================================ -->
+
+<!-- ── 1. Banner offline ──────────────────────────────────────
+     Se muestra únicamente cuando isOnline === false.
+     Usa animación CSS para deslizarse desde arriba.
+     ---------------------------------------------------------- -->
+<div
+  class="network-banner network-banner--offline"
+  *ngIf="!isOnline"
+  role="alert"
+  aria-live="assertive">
+
+  <div class="network-banner__content">
+    <!-- Ícono de nube sin conexión -->
+    <ion-icon name="cloud-offline-outline" class="network-banner__icon"></ion-icon>
+
+    <div class="network-banner__text">
+      <span class="network-banner__title">Sin conexión a internet</span>
+      <span class="network-banner__subtitle">
+        Los datos se guardarán localmente y se sincronizarán al reconectar
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- ── 2. Banner de reconexión (temporal, 3 segundos) ─────────
+     Se muestra cuando el dispositivo recupera la conexión.
+     Se oculta automáticamente tras 3 segundos.
+     ---------------------------------------------------------- -->
+<div
+  class="network-banner network-banner--reconnected"
+  *ngIf="showReconnectedBanner"
+  role="status"
+  aria-live="polite">
+
+  <div class="network-banner__content">
+    <ion-icon name="checkmark-circle-outline" class="network-banner__icon"></ion-icon>
+    <span class="network-banner__title">¡Conexión restaurada!</span>
+  </div>
+</div>
+
+<!-- ── 3. Badge de estado (siempre visible) ───────────────────
+     Pequeño indicador permanente que refleja el estado actual.
+     Se puede incluir en el header de ion-toolbar.
+     ---------------------------------------------------------- -->
+<div class="network-badge" [ngClass]="getBadgeClass()" [attr.aria-label]="statusText">
+
+  <!-- Ícono dinámico según tipo de conexión y estado -->
+  <ion-icon
+    [name]="networkIcon"
+    [color]="getIconColor()"
+    class="network-badge__icon">
+  </ion-icon>
+
+  <!-- Texto de estado (visible en pantallas medianas/grandes) -->
+  <span class="network-badge__label">{{ statusText }}</span>
+
+  <!-- Indicador de pulso animado (solo cuando está online) -->
+  <span class="network-badge__pulse" *ngIf="isOnline"></span>
+</div>

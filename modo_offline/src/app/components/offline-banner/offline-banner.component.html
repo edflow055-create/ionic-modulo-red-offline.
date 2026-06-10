@@ -1,0 +1,73 @@
+<!-- ============================================================
+     offline-banner.component.html
+     ============================================================
+     Banner de estado offline con mensajes amigables al usuario
+     y botón de sincronización manual.
+     ============================================================ -->
+
+<!-- ── Banner offline activo ─────────────────────────────────── -->
+<div class="offline-banner" *ngIf="!isOnline" role="alert" aria-live="assertive">
+
+  <div class="offline-banner__icon-wrap">
+    <ion-icon name="cloud-offline-outline"></ion-icon>
+  </div>
+
+  <div class="offline-banner__body">
+    <p class="offline-banner__title">Modo sin conexión activo</p>
+    <p class="offline-banner__subtitle">
+      Puedes seguir usando la app. Los cambios se guardan localmente
+      y se sincronizarán automáticamente al recuperar la conexión.
+    </p>
+
+    <!-- Muestra cuántos elementos están esperando sincronización -->
+    <p class="offline-banner__pending" *ngIf="pendingCount > 0">
+      <ion-icon name="hourglass-outline"></ion-icon>
+      <strong>{{ pendingCount }}</strong>
+      {{ pendingCount === 1 ? 'elemento pendiente' : 'elementos pendientes' }} de sincronización
+    </p>
+  </div>
+</div>
+
+<!-- ── Banner de sincronización disponible (online + pendientes) ─ -->
+<div
+  class="sync-banner"
+  *ngIf="isOnline && pendingCount > 0 && syncStatus !== 'syncing'"
+  role="status">
+
+  <ion-icon name="sync-outline" class="sync-banner__icon"></ion-icon>
+
+  <div class="sync-banner__body">
+    <p class="sync-banner__title">
+      Tienes {{ pendingCount }}
+      {{ pendingCount === 1 ? 'elemento guardado' : 'elementos guardados' }} localmente
+    </p>
+    <p class="sync-banner__subtitle">Conexión restaurada — sincronizando automáticamente</p>
+  </div>
+
+  <!-- Botón para forzar sync manual -->
+  <ion-button
+    fill="outline"
+    size="small"
+    color="primary"
+    class="sync-banner__btn"
+    [disabled]="isSyncDisabled()"
+    (click)="manualSync()">
+    {{ getSyncButtonText() }}
+  </ion-button>
+</div>
+
+<!-- ── Banner de sincronización en progreso ───────────────────── -->
+<div class="syncing-banner" *ngIf="syncStatus === 'syncing'" role="status" aria-live="polite">
+  <ion-spinner name="crescent" color="primary"></ion-spinner>
+  <span>Sincronizando datos pendientes...</span>
+</div>
+
+<!-- ── Banner de sincronización completada (temporal 4s) ─────── -->
+<div
+  class="sync-done-banner"
+  *ngIf="showSyncDoneMessage"
+  role="status"
+  aria-live="polite">
+  <ion-icon name="checkmark-circle-outline"></ion-icon>
+  <span>¡Todos los datos sincronizados correctamente!</span>
+</div>

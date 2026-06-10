@@ -1,0 +1,150 @@
+/*
+ * network-status.component.scss
+ * Estilos del indicador visual de estado de red.
+ * Compatible con Ionic 7 (variables CSS de Ionic).
+ */
+
+// ── Variables de color (basadas en el sistema de diseño de Ionic) ──────────
+$color-online: var(--ion-color-success, #2dd36f);
+$color-offline: var(--ion-color-danger, #eb445a);
+$color-reconnected: var(--ion-color-success, #2dd36f);
+$banner-height: 56px;
+
+// ── Banner principal (offline / reconexión) ────────────────────────────────
+.network-banner {
+  position: fixed;          // Fijo en pantalla, encima de todo el contenido
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;            // Encima de todos los componentes de Ionic
+  height: $banner-height;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+  // Animación de entrada (deslizarse desde arriba)
+  animation: slideDown 0.3s ease-out;
+
+  &__content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 600px;
+    width: 100%;
+  }
+
+  &__icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    color: white;
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  &__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    white-space: nowrap;
+  }
+
+  &__subtitle {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.85);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  // ── Variante offline (rojo) ──────────────────────────────────
+  &--offline {
+    background: $color-offline;
+  }
+
+  // ── Variante reconectado (verde) ────────────────────────────
+  &--reconnected {
+    background: $color-reconnected;
+
+    .network-banner__title {
+      font-size: 15px;
+    }
+  }
+}
+
+// ── Badge de estado (siempre visible en la UI) ─────────────────────────────
+.network-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative;
+
+  &__icon {
+    font-size: 16px;
+  }
+
+  &__label {
+    // Ocultar en pantallas muy pequeñas (< 360px)
+    @media (max-width: 360px) {
+      display: none;
+    }
+  }
+
+  // ── Estado online ────────────────────────────────────────────
+  &--online {
+    background: rgba(45, 211, 111, 0.15);
+    color: darken(#2dd36f, 10%);
+    border: 1px solid rgba(45, 211, 111, 0.4);
+  }
+
+  // ── Estado offline ───────────────────────────────────────────
+  &--offline {
+    background: rgba(235, 68, 90, 0.15);
+    color: darken(#eb445a, 5%);
+    border: 1px solid rgba(235, 68, 90, 0.4);
+  }
+
+  // ── Indicador de pulso animado (solo online) ─────────────────
+  &__pulse {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: $color-online;
+    animation: pulse 2s infinite;
+  }
+}
+
+// ── Animaciones ────────────────────────────────────────────────────────────
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(45, 211, 111, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(45, 211, 111, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(45, 211, 111, 0);
+  }
+}

@@ -1,0 +1,148 @@
+/*
+ * offline-banner.component.scss
+ * Estilos de los banners del modo offline.
+ */
+
+// ── Mixin reutilizable para banners ────────────────────────────────────────
+@mixin banner-base($bg-color, $border-color) {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-left: 4px solid $border-color;
+  background: $bg-color;
+  border-radius: 0 8px 8px 0;
+  margin: 8px 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  animation: fadeIn 0.3s ease-out;
+}
+
+// ── Banner de modo offline (naranja/rojo) ──────────────────────────────────
+.offline-banner {
+  @include banner-base(
+    rgba(255, 126, 0, 0.08),
+    var(--ion-color-warning, #ffc409)
+  );
+
+  &__icon-wrap {
+    ion-icon {
+      font-size: 28px;
+      color: var(--ion-color-warning, #ffc409);
+      flex-shrink: 0;
+    }
+  }
+
+  &__body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ion-color-dark, #222);
+    margin: 0 0 4px;
+  }
+
+  &__subtitle {
+    font-size: 13px;
+    color: var(--ion-color-medium, #666);
+    margin: 0 0 8px;
+    line-height: 1.4;
+  }
+
+  &__pending {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ion-color-warning-shade, #e0ac08);
+    background: rgba(255, 196, 9, 0.12);
+    border-radius: 12px;
+    padding: 3px 10px;
+    margin: 0;
+
+    ion-icon {
+      font-size: 14px;
+    }
+  }
+}
+
+// ── Banner "sync disponible" (azul) ───────────────────────────────────────
+.sync-banner {
+  @include banner-base(
+    rgba(56, 128, 255, 0.06),
+    var(--ion-color-primary, #3880ff)
+  );
+  align-items: center;
+
+  &__icon {
+    font-size: 24px;
+    color: var(--ion-color-primary, #3880ff);
+    flex-shrink: 0;
+  }
+
+  &__body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ion-color-dark, #222);
+    margin: 0 0 2px;
+  }
+
+  &__subtitle {
+    font-size: 12px;
+    color: var(--ion-color-medium, #666);
+    margin: 0;
+  }
+
+  &__btn {
+    flex-shrink: 0;
+    --border-radius: 8px;
+    font-size: 12px;
+  }
+}
+
+// ── Banner "sincronizando..." ──────────────────────────────────────────────
+.syncing-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  margin: 8px 12px;
+  background: rgba(56, 128, 255, 0.04);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--ion-color-primary, #3880ff);
+  animation: fadeIn 0.2s ease-out;
+}
+
+// ── Banner "sync completado" (verde) ──────────────────────────────────────
+.sync-done-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  margin: 8px 12px;
+  background: rgba(45, 211, 111, 0.1);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ion-color-success-shade, #28ba62);
+  animation: fadeIn 0.2s ease-out;
+
+  ion-icon {
+    font-size: 18px;
+  }
+}
+
+// ── Animaciones ────────────────────────────────────────────────────────────
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
